@@ -50,7 +50,7 @@
                 </div>
 
                 <!-- Chat Window -->
-                <div id="solvyr-chat-widget" style="display: none; width: 400px; height: 676px; background: white; border-radius: 16px; box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12); overflow: hidden; flex-direction: column; border: 1px solid #e5e7eb;">
+                <div id="solvyr-chat-widget" style="display: none; width: 400px; height: 752px; background: white; border-radius: 16px; box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12); overflow: hidden; flex-direction: column; border: 1px solid #e5e7eb;">
                     <!-- Header -->
                     <div style="background-color: #1f2937; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
                         <div style="display: flex; align-items: center; gap: 12px;">
@@ -91,8 +91,8 @@
                         <div style="display: flex; gap: 8px; align-items: center;">
                             <input type="text" id="solvyr-input" placeholder="Message..." style="flex: 1; padding: 11px 16px; border: 1px solid #d1d5db; border-radius: 22px; outline: none; font-size: 14px; background: #ffffff; color: #111827; font-weight: 400; transition: all 0.15s;">
                             <button id="solvyr-send" style="width: 40px; height: 40px; background: #f97316; color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.15s;">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; transform: rotate(-90deg);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
                             </button>
                         </div>
@@ -156,7 +156,7 @@
                 .solvyr-user-message {
                     display: flex;
                     justify-content: flex-end;
-                    margin-bottom: 16px;
+                    margin-bottom: 12px;
                     animation: solvyr-fadeIn 0.3s ease-out;
                 }
 
@@ -174,23 +174,23 @@
                 .solvyr-bot-message {
                     color: #111827;
                     line-height: 1.5;
-                    margin-bottom: 20px;
+                    margin-bottom: 12px;
                     font-size: 14px;
                     animation: solvyr-fadeIn 0.3s ease-out;
                 }
 
                 .solvyr-bot-message p {
-                    margin-bottom: 12px;
+                    margin-bottom: 8px;
                     color: #111827;
                 }
 
                 .solvyr-bot-message ul {
-                    margin: 12px 0;
+                    margin: 8px 0;
                     padding-left: 20px;
                 }
 
                 .solvyr-bot-message li {
-                    margin-bottom: 8px;
+                    margin-bottom: 6px;
                     color: #374151;
                     font-size: 14px;
                 }
@@ -218,7 +218,7 @@
                     display: flex;
                     align-items: center;
                     gap: 4px;
-                    margin-bottom: 16px;
+                    margin-bottom: 12px;
                     opacity: 0.6;
                 }
 
