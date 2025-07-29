@@ -1,6 +1,6 @@
 // sunrise-solvyr-widget.js
 // Sunrise Solvyr Chatbot Widget
-// Version: 1.0.0
+// Version: 2.0.0 - Enhanced UI
 
 (function() {
     'use strict';
@@ -38,31 +38,34 @@
         });
     }
 
-    // Create widget HTML
+    // Create widget HTML with enhanced styling
     function createWidgetHTML() {
         const html = `
             <div id="solvyr-widget-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 999999; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                 <!-- Chat Bubble -->
-                <div id="solvyr-chat-bubble" style="width: 64px; height: 64px; background-color: ${widgetState.config.theme.primaryColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(244, 115, 3, 0.3); transition: transform 0.2s;">
+                <div id="solvyr-chat-bubble" style="width: 64px; height: 64px; background-color: #f47303; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 32px rgba(244, 115, 3, 0.3); transition: transform 0.2s ease-in-out;">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; color: white;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                 </div>
 
                 <!-- Chat Window -->
-                <div id="solvyr-chat-widget" style="display: none; width: 400px; height: 600px; background: white; border-radius: 16px; box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12); overflow: hidden; flex-direction: column;">
+                <div id="solvyr-chat-widget" style="display: none; width: 400px; height: 676px; background: white; border-radius: 16px; box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12); overflow: hidden; flex-direction: column; border: 1px solid #e5e7eb;">
                     <!-- Header -->
-                    <div style="background-color: ${widgetState.config.theme.headerColor}; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="background-color: #1f2937; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
                         <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 32px; height: 32px; background-color: ${widgetState.config.theme.primaryColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 32px; height: 32px; background-color: #f97316; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                 <span style="color: white; font-weight: 600; font-size: 14px;">S</span>
                             </div>
                             <div>
-                                <h3 style="margin: 0; font-size: 16px; font-weight: 600;">Sunrise Solvyr</h3>
-                                <p style="margin: 0; font-size: 12px; opacity: 0.9;">AI Support Assistant</p>
+                                <h3 style="margin: 0; font-size: 14px; font-weight: 600;">Sunrise Solvyr</h3>
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <div id="solvyr-health-indicator" style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></div>
+                                    <p style="margin: 0; font-size: 12px; opacity: 0.9;">Online</p>
+                                </div>
                             </div>
                         </div>
-                        <button id="solvyr-close-widget" style="background: none; border: none; color: white; cursor: pointer; padding: 4px;">
+                        <button id="solvyr-close-widget" style="background: none; border: none; color: #9ca3af; cursor: pointer; padding: 4px; transition: color 0.15s;">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -70,38 +73,34 @@
                     </div>
 
                     <!-- Auth Screen -->
-                    <div id="solvyr-auth-screen" style="display: flex; flex: 1; align-items: center; justify-content: center; padding: 20px; text-align: center;">
+                    <div id="solvyr-auth-screen" style="display: flex; flex: 1; align-items: center; justify-content: center; padding: 20px; text-align: center; background: #ffffff;">
                         <div>
-                            <h3 style="color: ${widgetState.config.theme.headerColor}; margin-bottom: 10px;">Authenticating...</h3>
-                            <div style="width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid ${widgetState.config.theme.primaryColor}; border-radius: 50%; animation: solvyr-spin 1s linear infinite; margin: 20px auto;"></div>
+                            <h3 style="color: #1f2937; margin-bottom: 10px; font-size: 16px;">Authenticating...</h3>
+                            <div style="width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #f97316; border-radius: 50%; animation: solvyr-spin 1s linear infinite; margin: 20px auto;"></div>
                             <p id="solvyr-auth-status" style="color: #6b7280; font-size: 14px;">Checking your session...</p>
                         </div>
                     </div>
 
                     <!-- Messages -->
-                    <div id="solvyr-messages" style="display: none; flex: 1; padding: 20px; overflow-y: auto; background: #f8f9fa;">
+                    <div id="solvyr-messages" style="display: none; flex: 1; padding: 24px; overflow-y: auto; background: #ffffff;">
                         <div id="solvyr-messages-container"></div>
                     </div>
 
-                    <!-- Typing Indicator -->
-                    <div id="solvyr-typing" style="display: none; padding: 0 20px 20px;">
-                        <div style="display: inline-flex; align-items: center; gap: 4px; background: white; padding: 12px 16px; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
-                            <div style="width: 8px; height: 8px; background: #9ca3af; border-radius: 50%; animation: solvyr-typing 1.4s infinite;"></div>
-                            <div style="width: 8px; height: 8px; background: #9ca3af; border-radius: 50%; animation: solvyr-typing 1.4s infinite; animation-delay: 0.2s;"></div>
-                            <div style="width: 8px; height: 8px; background: #9ca3af; border-radius: 50%; animation: solvyr-typing 1.4s infinite; animation-delay: 0.4s;"></div>
-                            <span style="font-size: 12px; color: #6b7280; margin-left: 8px;">Solvyr is typing...</span>
-                        </div>
-                    </div>
-
-                    <!-- Input -->
-                    <div style="border-top: 1px solid #e5e7eb; padding: 16px; background: white; display: none;" id="solvyr-input-area">
-                        <div style="display: flex; gap: 8px;">
-                            <input type="text" id="solvyr-input" placeholder="Type your message..." style="flex: 1; padding: 10px 16px; border: 1px solid #d1d5db; border-radius: 20px; outline: none; font-size: 14px;">
-                            <button id="solvyr-send" style="width: 40px; height: 40px; background: ${widgetState.config.theme.primaryColor}; color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <!-- Input Area -->
+                    <div style="border-top: 1px solid #f3f4f6; padding: 16px; background: white; display: none;" id="solvyr-input-area">
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="text" id="solvyr-input" placeholder="Message..." style="flex: 1; padding: 11px 16px; border: 1px solid #d1d5db; border-radius: 22px; outline: none; font-size: 14px; background: #ffffff; color: #111827; font-weight: 400; transition: all 0.15s;">
+                            <button id="solvyr-send" style="width: 40px; height: 40px; background: #f97316; color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.15s;">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
                             </button>
+                        </div>
+                        <!-- Privacy Footer -->
+                        <div style="margin-top: 12px; text-align: center;">
+                            <a href="https://www.sunrisesoftware.com/privacy-policy" target="_blank" style="font-size: 11px; color: #9ca3af; text-decoration: none;">Privacy Policy</a>
+                            <span style="font-size: 11px; color: #9ca3af;"> | </span>
+                            <span style="font-size: 11px; color: #9ca3af;">© Sunrise Software Limited</span>
                         </div>
                     </div>
                 </div>
@@ -113,6 +112,11 @@
                     100% { transform: rotate(360deg); }
                 }
 
+                @keyframes solvyr-fadeIn {
+                    from { opacity: 0; transform: translateY(8px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+
                 @keyframes solvyr-typing {
                     0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
                     30% { transform: translateY(-8px); opacity: 1; }
@@ -120,52 +124,118 @@
 
                 #solvyr-chat-bubble:hover {
                     transform: scale(1.05);
+                    box-shadow: 0 12px 40px rgba(244, 115, 3, 0.4);
+                }
+
+                #solvyr-close-widget:hover {
+                    color: white !important;
                 }
 
                 #solvyr-input:focus {
-                    border-color: ${widgetState.config.theme.primaryColor};
-                    box-shadow: 0 0 0 2px ${widgetState.config.theme.primaryColor}33;
+                    border-color: transparent;
+                    box-shadow: 0 0 0 2px #f97316;
+                }
+
+                #solvyr-input::placeholder {
+                    color: #9ca3af;
                 }
 
                 #solvyr-send:hover {
-                    opacity: 0.9;
+                    background-color: #ea580c;
+                }
+
+                #solvyr-send:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 2px #f97316;
                 }
 
                 .solvyr-message {
-                    margin-bottom: 16px;
                     animation: solvyr-fadeIn 0.3s ease-out;
-                }
-
-                @keyframes solvyr-fadeIn {
-                    from { opacity: 0; transform: translateY(8px); }
-                    to { opacity: 1; transform: translateY(0); }
                 }
 
                 .solvyr-user-message {
                     display: flex;
                     justify-content: flex-end;
                     margin-bottom: 16px;
+                    animation: solvyr-fadeIn 0.3s ease-out;
                 }
 
                 .solvyr-user-bubble {
-                    background: ${widgetState.config.theme.headerColor};
-                    color: white;
-                    padding: 10px 16px;
+                    background-color: #1f2937;
+                    color: #ffffff;
+                    padding: 10px 14px;
                     border-radius: 18px;
                     max-width: 280px;
                     font-size: 14px;
+                    line-height: 1.4;
+                    font-weight: 400;
                 }
 
                 .solvyr-bot-message {
                     color: #111827;
                     line-height: 1.5;
-                    margin-bottom: 16px;
+                    margin-bottom: 20px;
+                    font-size: 14px;
+                    animation: solvyr-fadeIn 0.3s ease-out;
+                }
+
+                .solvyr-bot-message p {
+                    margin-bottom: 12px;
+                    color: #111827;
+                }
+
+                .solvyr-bot-message ul {
+                    margin: 12px 0;
+                    padding-left: 20px;
+                }
+
+                .solvyr-bot-message li {
+                    margin-bottom: 8px;
+                    color: #374151;
                     font-size: 14px;
                 }
 
                 .solvyr-bot-message strong {
-                    color: #000;
+                    color: #000000;
                     font-weight: 600;
+                }
+
+                .solvyr-bot-message h2 {
+                    color: #1f2937;
+                    margin: 20px 0 16px 0;
+                    font-size: 1.3em;
+                    font-weight: 600;
+                }
+
+                .solvyr-bot-message h3 {
+                    color: #1f2937;
+                    margin: 16px 0 12px 0;
+                    font-size: 1.1em;
+                    font-weight: 600;
+                }
+
+                .solvyr-typing-indicator {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    margin-bottom: 16px;
+                    opacity: 0.6;
+                }
+
+                .solvyr-typing-dot {
+                    width: 6px;
+                    height: 6px;
+                    background-color: #9ca3af;
+                    border-radius: 50%;
+                    animation: solvyr-typing 1.4s ease-in-out infinite;
+                }
+
+                .solvyr-typing-dot:nth-child(2) {
+                    animation-delay: 0.2s;
+                }
+
+                .solvyr-typing-dot:nth-child(3) {
+                    animation-delay: 0.4s;
                 }
             </style>
         `;
@@ -208,6 +278,9 @@
         // Start authentication if not already authenticated
         if (!widgetState.isAuthenticated) {
             authenticate();
+        } else {
+            // Focus input if already authenticated
+            document.getElementById('solvyr-input').focus();
         }
     }
 
@@ -268,12 +341,16 @@
         document.getElementById('solvyr-messages').style.display = 'block';
         document.getElementById('solvyr-input-area').style.display = 'block';
 
-        // Add welcome message
+        // Add welcome message with enhanced formatting
         const welcomeMessage = widgetState.userDetails?.displayName ? 
-            `Hello ${widgetState.userDetails.displayName}! I'm Sunrise Solvyr. How can I help you today?` :
-            `Hello! I'm Sunrise Solvyr. How can I help you today?`;
+            `<p><strong>Hello ${widgetState.userDetails.displayName}!</strong> I'm Sunrise Solvyr.</p><p style="margin-top: 8px;">How can I help you today?</p><p style="font-size: 13px; color: #6b7280; margin-top: 8px;">You can say things like "Create a new ticket" or "Check the status of a ticket".</p>` :
+            `<p><strong>Hello! I'm Sunrise Solvyr.</strong> How can I help you today?</p><p style="font-size: 13px; color: #6b7280; margin-top: 8px;">You can say things like "Create a new ticket" or "Check the status of a ticket".</p>`;
         
-        addBotMessage(welcomeMessage);
+        const container = document.getElementById('solvyr-messages-container');
+        const messageEl = document.createElement('div');
+        messageEl.className = 'solvyr-bot-message';
+        messageEl.innerHTML = welcomeMessage;
+        container.appendChild(messageEl);
         
         // Focus input
         document.getElementById('solvyr-input').focus();
@@ -290,9 +367,17 @@
         addUserMessage(message);
         input.value = '';
 
-        // Show typing indicator
-        showTyping();
+        // Show typing indicator after a short delay
+        setTimeout(() => {
+            showTyping();
+            
+            // Make API call after showing typing
+            makeApiCall(message);
+        }, 500);
+    }
 
+    // Make API call
+    async function makeApiCall(message) {
         try {
             const response = await fetch(widgetState.config.chatApiUrl, {
                 method: 'POST',
@@ -306,10 +391,24 @@
                 })
             });
 
-            const data = await response.json();
             hideTyping();
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
             
             addBotMessage(data.message || 'Sorry, I encountered an issue.');
+
+            // Check if this was a ticket list response and send follow-up
+            if (data.message && (data.message.includes("Here are the most recent tickets:") || 
+                data.message.includes("Here are your tickets related to"))) {
+                setTimeout(() => {
+                    addBotMessage("Is there anything else I can help you with?");
+                }, 1000);
+            }
+
         } catch (error) {
             console.error('[Solvyr] Chat error:', error);
             hideTyping();
@@ -327,7 +426,7 @@
         scrollToBottom();
     }
 
-    // Add bot message
+    // Add bot message with enhanced markdown parsing
     function addBotMessage(text) {
         const container = document.getElementById('solvyr-messages-container');
         const messageEl = document.createElement('div');
@@ -339,13 +438,26 @@
 
     // Show typing indicator
     function showTyping() {
-        document.getElementById('solvyr-typing').style.display = 'block';
+        const container = document.getElementById('solvyr-messages-container');
+        const typingEl = document.createElement('div');
+        typingEl.id = 'solvyr-typing';
+        typingEl.className = 'solvyr-typing-indicator';
+        typingEl.innerHTML = `
+            <div class="solvyr-typing-dot"></div>
+            <div class="solvyr-typing-dot"></div>
+            <div class="solvyr-typing-dot"></div>
+            <span style="font-size: 12px; color: #6b7280; margin-left: 8px;">Solvyr is typing...</span>
+        `;
+        container.appendChild(typingEl);
         scrollToBottom();
     }
 
     // Hide typing indicator
     function hideTyping() {
-        document.getElementById('solvyr-typing').style.display = 'none';
+        const typingEl = document.getElementById('solvyr-typing');
+        if (typingEl) {
+            typingEl.remove();
+        }
     }
 
     // Scroll to bottom
@@ -354,12 +466,32 @@
         messages.scrollTop = messages.scrollHeight;
     }
 
-    // Parse markdown
+    // Enhanced markdown parsing
     function parseMarkdown(text) {
         return text
+            // Headers with better spacing
+            .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+            
+            // Bold text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            
+            // Bullet points
+            .replace(/^\* (.+)$/gim, '<li>$1</li>')
+            .replace(/^\• (.+)$/gim, '<li>$1</li>')
+            
+            // Wrap consecutive <li> elements in <ul>
+            .replace(/(<li>.*<\/li>\n?)+/g, function(match) {
+                return '<ul>' + match + '</ul>';
+            })
+            
+            // Paragraphs
             .replace(/\n\n/g, '</p><p>')
-            .replace(/\n/g, '<br>');
+            .replace(/\n/g, '<br>')
+            
+            // Wrap content in paragraph if it doesn't start with a block element
+            .replace(/^(?!<[h2|h3|ul|ol|li|p])/gim, '<p>')
+            .replace(/(?![h2|h3|ul|ol|li|p]>)$/gim, '</p>');
     }
 
     // Escape HTML
