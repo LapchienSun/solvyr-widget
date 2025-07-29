@@ -76,8 +76,8 @@
         <div class="info-box">
             <strong>Current Page URL:</strong> <span id="current-url"></span><br>
             <strong>Widget Loaded:</strong> <span id="widget-status">Checking...</span><br>
-            <strong>Auth API:</strong> https://solvyr-chatbot-admin-api.azurewebsites.net<br>
-            <strong>Chat API:</strong> https://solvyr-chatbot.azurewebsites.net
+            <strong>Auth API:</strong> https://chatbot-api-admin.sunrise-saas.com<br>
+            <strong>Chat API:</strong> https://solvyr-chatbot.sunrise-saas.com
         </div>
 
         <div class="section">
@@ -114,7 +114,7 @@
     </div>
 
     <!-- Include the widget -->
-    <script src="https://green-coast-069527403.2.azurestaticapps.net/sunrise-solvyr-widget.js"></script>
+    <script src="https://chat-widget.sunrise-saas.com/sunrise-solvyr-widget.js"></script>
     
     <script>
         // Initialize debug console
@@ -133,8 +133,8 @@
         window.addEventListener('load', function() {
             try {
                 SunriseSolvyr.init({
-                    chatApiUrl: 'https://solvyr-chatbot.azurewebsites.net/chat',
-                    authApiUrl: 'https://solvyr-chatbot-admin-api.azurewebsites.net'
+                    chatApiUrl: 'https://solvyr-chatbot.sunrise-saas.com/chat',
+                    authApiUrl: 'https://chatbot-api-admin.sunrise-saas.com'
                 });
                 document.getElementById('widget-status').textContent = 'Loaded ✓';
                 document.getElementById('widget-status').style.color = '#10b981';
@@ -177,7 +177,7 @@
             const status = document.getElementById('session-status');
             
             try {
-                const response = await fetch('https://solvyr-chatbot-admin-api.azurewebsites.net/api/get-current-user-details', {
+                const response = await fetch('https://chatbot-api-admin.sunrise-saas.com/api/get-current-user-details', {
                     method: 'GET',
                     credentials: 'include',
                     headers: {

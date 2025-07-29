@@ -10,8 +10,8 @@
 
     // Widget configuration
     const defaultConfig = {
-        chatApiUrl: 'https://solvyr-chatbot.azurewebsites.net/chat',
-        authApiUrl: 'https://solvyr-chatbot-admin-api.azurewebsites.net',
+        chatApiUrl: 'https://solvyr-chatbot.sunrise-saas.com//chat',
+        authApiUrl: 'https://chatbot-api-admin.sunrise-saas.com',
         position: 'bottom-right',
         theme: {
             primaryColor: '#f47303',
