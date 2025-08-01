@@ -295,13 +295,21 @@
     async function authenticate() {
         console.log('[Solvyr] Starting authentication...');
         
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        
+        // Add user identifier if provided in widget config
+        if (widgetState.userIdentifier) {
+            headers['X-User-Identifier'] = widgetState.userIdentifier;
+            console.log('[Solvyr] Using user identifier from config:', widgetState.userIdentifier);
+        }
+        
         try {
             const response = await fetch(`${widgetState.config.authApiUrl}/api/get-current-user-details`, {
                 method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                credentials: 'include',  // Keep this for backward compatibility
+                headers: headers
             });
 
             console.log('[Solvyr] Auth response status:', response.status);
@@ -319,7 +327,11 @@
                 const error = await response.json();
                 showAuthError(error.message || 'Access denied. Please contact support.');
             } else if (response.status === 401) {
-                showAuthError('Please log in to your portal first.');
+                if (widgetState.userIdentifier) {
+                    showAuthError(`User ${widgetState.userIdentifier} not found. Please contact support.`);
+                } else {
+                    showAuthError('Please log in to your portal first.');
+                }
             } else {
                 showAuthError('Authentication failed. Please try again.');
             }
@@ -502,17 +514,23 @@
     }
 
     // Initialize widget
-    function init(config) {
-        console.log('[Solvyr] Initializing widget...');
-        
-        // Merge config
-        widgetState.config = { ...defaultConfig, ...config };
-        
-        // Create widget HTML
-        createWidgetHTML();
-        
-        console.log('[Solvyr] Widget initialized');
+function init(config) {
+    console.log('[Solvyr] Initializing widget...');
+    
+    // Merge config and store user identifier
+    widgetState.config = { ...defaultConfig, ...config };
+    
+    // Store user identifier for authentication
+    if (config && config.userIdentifier) {
+        widgetState.userIdentifier = config.userIdentifier;
+        console.log('[Solvyr] User identifier provided:', config.userIdentifier);
     }
+    
+    // Create widget HTML
+    createWidgetHTML();
+    
+    console.log('[Solvyr] Widget initialized');
+}
 
     // Public API
     window.SunriseSolvyr = {
